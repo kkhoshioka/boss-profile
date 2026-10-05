@@ -20,6 +20,7 @@
     margin:0; background:var(--bg); color:var(--ink);
     font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;
     line-height:1.8; -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
   img{max-width:100%; display:block;}
   svg{display:block;}
@@ -88,10 +89,51 @@
     padding:10px 18px; border-radius:999px; text-decoration:none;
   }
 
-  /* ---------- ヒーロー:左にコピー、右に写真(明るいレイアウト) ---------- */
-  .hero{padding:64px 0 40px;}
-  .hero-grid{display:grid; gap:40px; align-items:center;}
-  @media(min-width:860px){.hero-grid{grid-template-columns:1.05fr 1fr;}}
+  /* ---------- ヒーロー:ブロックを重ねたコラージュ風レイアウト ---------- */
+  .hero{padding:48px 0 140px; overflow:visible;}
+  .collage{position:relative;}
+  .collage-bg{
+    position:relative; z-index:0; border-radius:24px; width:76%; min-height:150px;
+    background:linear-gradient(135deg, var(--navy), var(--navy2));
+    margin:0 0 -70px auto;
+  }
+  .collage-giant{
+    position:absolute; z-index:0; pointer-events:none; user-select:none;
+    font-weight:900; color:rgba(26,33,48,0.065);
+    font-size:clamp(64px,13vw,170px); line-height:1; letter-spacing:0.01em;
+    white-space:nowrap; top:-10px; left:-6px;
+  }
+  .collage-photo{
+    position:relative; z-index:1; border-radius:22px; overflow:hidden;
+    width:90%; aspect-ratio:4/3; box-shadow:0 20px 50px rgba(10,16,26,0.35);
+  }
+  .collage-card{
+    position:relative; z-index:2; margin:-70px 18px 0; background:#fff;
+    border-radius:22px; padding:34px 28px; box-shadow:0 28px 60px rgba(18,35,61,0.16);
+  }
+  .spin-badge{position:absolute; z-index:3; width:96px; height:96px; right:22px; top:-48px;}
+  .spin-badge svg{animation:spin 16s linear infinite;}
+  @keyframes spin{ to{transform:rotate(360deg);} }
+  .spin-center{
+    position:absolute; inset:0; margin:auto; width:42px; height:42px; border-radius:50%;
+    background:linear-gradient(135deg, var(--accent), var(--accent-soft));
+    display:grid; place-items:center; box-shadow:0 8px 18px rgba(194,101,12,0.35);
+  }
+  .spin-center svg{animation:none; width:18px; height:18px;}
+  @media(min-width:860px){
+    .collage{min-height:640px;}
+    .collage-bg{
+      position:absolute; top:30px; right:0; width:60%; height:86%; margin:0; padding:0;
+    }
+    .collage-photo{
+      position:absolute; top:0; right:0; width:54%; height:90%; aspect-ratio:auto;
+    }
+    .collage-giant{top:auto; bottom:-6px; left:-10px;}
+    .collage-card{
+      position:relative; z-index:2; width:52%; margin:70px 0 0; padding:40px 36px;
+    }
+    .spin-badge{right:8%; bottom:-20px; top:auto;}
+  }
   .kicker{
     display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:800;
     color:var(--safe); background:rgba(15,118,110,0.08); padding:7px 14px; border-radius:999px;
@@ -120,14 +162,13 @@
   .hero-stats .num{font-size:22px; font-weight:900; color:var(--accent);}
   .hero-stats .cap{font-size:11px; color:var(--ink-faint); margin-top:4px;}
 
-  .hero-photo{position:relative; border-radius:24px; overflow:hidden; aspect-ratio:4/5; box-shadow:0 24px 48px rgba(18,35,61,0.18);}
-  .hero-photo img{
+  .collage-photo img{
     width:100%; height:100%; object-fit:cover;
     animation:kenburns 24s ease-in-out infinite alternate;
   }
   @keyframes kenburns{ from{transform:scale(1.02);} to{transform:scale(1.13);} }
   .hero-photo-badge{
-    position:absolute; left:16px; bottom:16px; background:rgba(255,255,255,0.92);
+    position:absolute; left:16px; bottom:16px; z-index:2; background:rgba(255,255,255,0.92);
     backdrop-filter:blur(6px); border-radius:12px; padding:12px 16px; font-size:12px; font-weight:700; color:var(--navy);
     box-shadow:0 8px 20px rgba(0,0,0,0.12);
   }
@@ -241,28 +282,46 @@
 </header>
 
 <section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <span class="kicker fade-in">安全第一 ・ 地域密着</span>
-      <h1>
-        <span class="line-mask lm1"><span>解体の先にある、</span></span>
-        <span class="line-mask lm2"><span>次の景色まで<span class="accent-text">一緒に</span>考える。</span></span>
-      </h1>
-      <p class="sub fade-in fi1">木造・鉄骨・RC造まで対応。近隣への配慮と安全管理を徹底し、
-        見積もりから廃材処理までワンストップでお任せいただけます。</p>
-      <div class="hero-ctas fade-in fi2">
-        <a class="btn btn-primary" href="#contact">無料で見積もり相談</a>
-        <a class="btn btn-ghost" href="#works">施工の流れを見る</a>
+  <div class="wrap">
+    <div class="collage">
+      <span class="collage-giant" aria-hidden="true">DEMOLITION</span>
+      <div class="collage-bg" aria-hidden="true"></div>
+
+      <div class="collage-photo fade-in fi1" id="heroPhoto">
+        <img src="https://images.pexels.com/photos/11461002/pexels-photo-11461002.jpeg?auto=compress&cs=tinysrgb&w=900" alt="解体現場のイメージ写真">
+        <div class="hero-photo-badge">現場のイメージ(フリー素材)</div>
       </div>
-      <div class="hero-stats fade-in fi3">
-        <div><div class="num" data-count="18">0</div><div class="cap">施工実績(年)</div></div>
-        <div><div class="num" data-count="240">0</div><div class="cap">年間対応件数(件)</div></div>
-        <div><div class="num" data-count="30">0</div><div class="cap">相談の目安(分)</div></div>
+
+      <div class="collage-card">
+        <span class="kicker fade-in">安全第一 ・ 地域密着</span>
+        <h1>
+          <span class="line-mask lm1"><span>解体の先にある、</span></span>
+          <span class="line-mask lm2"><span>次の景色まで<span class="accent-text">一緒に</span>考える。</span></span>
+        </h1>
+        <p class="sub fade-in fi1">木造・鉄骨・RC造まで対応。近隣への配慮と安全管理を徹底し、
+          見積もりから廃材処理までワンストップでお任せいただけます。</p>
+        <div class="hero-ctas fade-in fi2">
+          <a class="btn btn-primary" href="#contact">無料で見積もり相談</a>
+          <a class="btn btn-ghost" href="#works">施工の流れを見る</a>
+        </div>
+        <div class="hero-stats fade-in fi3">
+          <div><div class="num" data-count="18">0</div><div class="cap">施工実績(年)</div></div>
+          <div><div class="num" data-count="240">0</div><div class="cap">年間対応件数(件)</div></div>
+          <div><div class="num" data-count="30">0</div><div class="cap">相談の目安(分)</div></div>
+        </div>
       </div>
-    </div>
-    <div class="hero-photo fade-in fi1" id="heroPhoto">
-      <img src="https://images.pexels.com/photos/11461002/pexels-photo-11461002.jpeg?auto=compress&cs=tinysrgb&w=900" alt="解体現場のイメージ写真">
-      <div class="hero-photo-badge">現場のイメージ(フリー素材)</div>
+
+      <div class="spin-badge fade-in fi2">
+        <svg viewBox="0 0 100 100" width="96" height="96">
+          <defs><path id="circlePath" d="M 50,50 m -40,0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0"/></defs>
+          <text font-size="8.3" font-weight="700" fill="#12233d" letter-spacing="2">
+            <textPath href="#circlePath">無料見積もり ・ 柱石解体工業 ・ 無料見積もり ・ </textPath>
+          </text>
+        </svg>
+        <div class="spin-center">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
     </div>
   </div>
 </section>
