@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>柱石解体工業(サンプル) | 施工実績と対応エリア</title>
+<meta name="description" content="解体業者様向けホームページ制作のサンプルです。架空の会社「柱石解体工業」を題材にした、実際にお作りできる完成イメージです。">
+<style>
+  :root{
+    --bg:#111418; --bg2:#181d23; --panel:#1b2026;
+    --line:rgba(255,255,255,0.08);
+    --ink:#f5f5f4; --ink-faint:rgba(245,245,244,0.62);
+    --accent:#f59e0b; --accent2:#fbbf24;
+    --safe:#2dd4bf;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;
+    line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  img,svg{max-width:100%; display:block;}
+  a{color:inherit;}
+
+  /* ---------- 架空であることの明示 ---------- */
+  .demo-flag{
+    position:sticky; top:0; z-index:50; text-align:center;
+    background:var(--accent); color:#1a1200; font-weight:700; font-size:12px;
+    padding:7px 10px; letter-spacing:0.03em;
+  }
+
+  /* ---------- 共通 ---------- */
+  .wrap{max-width:1040px; margin:0 auto; padding:0 20px;}
+  section{padding:76px 0;}
+  .eyebrow{
+    display:inline-block; font-size:12px; font-weight:700; letter-spacing:0.18em;
+    color:var(--accent); text-transform:uppercase; margin-bottom:12px;
+  }
+  h2{font-size:clamp(22px,4vw,32px); font-weight:800; margin:0 0 16px; letter-spacing:0.01em;}
+  .lead{color:var(--ink-faint); font-size:15px; max-width:52ch; margin:0 0 36px;}
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- ヘッダー ---------- */
+  header{
+    position:sticky; top:29px; z-index:40;
+    background:rgba(17,20,24,0.78); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 20px;}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:15px;}
+  .brand-mark{
+    width:30px; height:30px; border-radius:8px;
+    background:linear-gradient(135deg, var(--accent), var(--accent2));
+    display:grid; place-items:center; color:#1a1200; font-weight:900; font-size:14px;
+  }
+  .nav a.cta-mini{
+    background:var(--accent); color:#1a1200; font-weight:700; font-size:13px;
+    padding:9px 16px; border-radius:999px; text-decoration:none;
+  }
+
+  /* ---------- ヒーロー ---------- */
+  .hero{
+    position:relative; overflow:hidden; padding:88px 0 96px;
+    background:
+      radial-gradient(900px 480px at 85% -10%, rgba(245,158,11,0.18), transparent 60%),
+      linear-gradient(180deg, var(--bg), var(--bg2));
+  }
+  .hero-grid{position:absolute; inset:0; opacity:0.35; pointer-events:none;}
+  .hero h1{
+    font-size:clamp(30px,5.4vw,50px); font-weight:900; line-height:1.3;
+    margin:0 0 18px; letter-spacing:0.01em;
+  }
+  .hero h1 .accent-text{color:var(--accent);}
+  .hero p.sub{color:var(--ink-faint); font-size:16px; max-width:46ch; margin:0 0 30px;}
+  .hero-ctas{display:flex; flex-wrap:wrap; gap:12px;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:14px 24px;
+    border-radius:12px; font-weight:800; font-size:15px; text-decoration:none;
+    border:1px solid transparent;
+  }
+  .btn-primary{background:linear-gradient(90deg, var(--accent), var(--accent2)); color:#1a1200;}
+  .btn-ghost{border-color:var(--line); color:var(--ink);}
+  .hero-stats{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    margin-top:56px; border:1px solid var(--line); border-radius:16px; overflow:hidden;
+  }
+  .hero-stats div{background:var(--panel); padding:18px 14px; text-align:center;}
+  .hero-stats .num{font-size:22px; font-weight:900; color:var(--accent);}
+  .hero-stats .cap{font-size:11px; color:var(--ink-faint); margin-top:4px;}
+
+  /* ---------- 強み ---------- */
+  .strengths{display:grid; gap:16px;}
+  @media(min-width:720px){.strengths{grid-template-columns:repeat(3,1fr);}}
+  .s-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:24px;
+    transition:transform .25s ease, border-color .25s ease;
+  }
+  .s-card:hover{transform:translateY(-4px); border-color:rgba(245,158,11,0.5);}
+  .s-icon{width:44px; height:44px; margin-bottom:16px;}
+  .s-card h3{font-size:16px; margin:0 0 8px; font-weight:800;}
+  .s-card p{font-size:13px; color:var(--ink-faint); margin:0;}
+
+  /* ---------- 施工の流れ ---------- */
+  .flow{display:grid; gap:0;}
+  .f-step{
+    display:grid; grid-template-columns:52px 1fr; gap:18px; padding:20px 0;
+    border-top:1px solid var(--line);
+  }
+  .f-step:last-child{border-bottom:1px solid var(--line);}
+  .f-num{
+    width:44px; height:44px; border-radius:50%; background:var(--panel);
+    border:1px solid var(--line); display:grid; place-items:center;
+    font-weight:900; color:var(--accent); font-size:15px;
+  }
+  .f-step h3{margin:0 0 4px; font-size:15px; font-weight:800;}
+  .f-step p{margin:0; font-size:13px; color:var(--ink-faint);}
+
+  /* ---------- 対応エリア ---------- */
+  .areas{display:flex; flex-wrap:wrap; gap:10px;}
+  .area-tag{
+    background:var(--panel); border:1px solid var(--line); border-radius:999px;
+    padding:9px 16px; font-size:13px; color:var(--ink-faint);
+  }
+  .area-tag.main{border-color:var(--accent); color:var(--accent); font-weight:700;}
+
+  /* ---------- 会社の想い ---------- */
+  .about{
+    background:var(--panel); border:1px solid var(--line); border-radius:20px;
+    padding:32px; display:grid; gap:20px;
+  }
+  @media(min-width:720px){.about{grid-template-columns:120px 1fr; align-items:start;}}
+  .avatar{
+    width:96px; height:96px; border-radius:50%;
+    background:linear-gradient(135deg, var(--accent), var(--safe));
+    display:grid; place-items:center; font-weight:900; font-size:28px; color:#1a1200;
+  }
+  .about blockquote{margin:0 0 10px; font-size:15px;}
+  .about .role{font-size:12px; color:var(--ink-faint);}
+
+  /* ---------- 料金 ---------- */
+  .pricing{display:grid; gap:16px;}
+  @media(min-width:720px){.pricing{grid-template-columns:repeat(2,1fr);}}
+  .p-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:26px;
+  }
+  .p-card .ptitle{font-size:13px; color:var(--ink-faint); margin-bottom:6px;}
+  .p-card .pval{font-size:24px; font-weight:900; color:var(--accent); margin-bottom:12px;}
+  .p-card ul{margin:0; padding-left:1.1em; font-size:13px; color:var(--ink-faint);}
+  .p-card li{margin-bottom:6px;}
+
+  /* ---------- CTA ---------- */
+  .cta-band{
+    background:linear-gradient(120deg, #1a1200, #2a1d05 60%, var(--bg));
+    border:1px solid rgba(245,158,11,0.35); border-radius:24px;
+    padding:40px 28px; text-align:center;
+  }
+  .cta-band h2{margin-bottom:10px;}
+  .cta-band p{color:var(--ink-faint); margin-bottom:24px;}
+
+  footer{border-top:1px solid var(--line); padding:28px 0; text-align:center; color:var(--ink-faint); font-size:12px;}
+</style>
+</head>
+<body>
+
+<div class="demo-flag">※これは実在しない会社「柱石解体工業」による、ホームページ制作サンプルです。実績・数値は構成イメージであり、実在の工事・顧客の声ではありません。</div>
+
+<header>
+  <div class="nav wrap">
+    <div class="brand">
+      <span class="brand-mark">柱</span>
+      柱石解体工業(サンプル)
+    </div>
+    <a class="cta-mini" href="#contact">相談してみる</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow reveal">安全第一 / 地域密着</span>
+    <h1 class="reveal">解体の先にある、<br>次の景色まで<span class="accent-text">一緒に</span>考える。</h1>
+    <p class="sub reveal">木造・鉄骨・RC造まで対応。近隣への配慮と安全管理を徹底し、
+      見積もりから廃材処理までワンストップでお任せいただけます。</p>
+    <div class="hero-ctas reveal">
+      <a class="btn btn-primary" href="#contact">無料で見積もり相談</a>
+      <a class="btn btn-ghost" href="#works">施工の流れを見る</a>
+    </div>
+    <div class="hero-stats reveal">
+      <div><div class="num">◯◯年</div><div class="cap">地域での施工実績</div></div>
+      <div><div class="num">◯◯件</div><div class="cap">年間対応件数(目安)</div></div>
+      <div><div class="num">◯分</div><div class="cap">見積もり相談の目安時間</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow reveal">選ばれる理由</span>
+    <h2 class="reveal">安心してお任せいただく、3つの理由</h2>
+    <p class="lead reveal">価格だけでなく、近隣対応や安全管理まで含めてご相談いただけます。</p>
+    <div class="strengths">
+      <div class="s-card reveal">
+        <svg class="s-icon" viewBox="0 0 48 48" fill="none"><rect x="6" y="20" width="36" height="20" rx="3" stroke="#f59e0b" stroke-width="2.5"/><path d="M14 20V12a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v8" stroke="#f59e0b" stroke-width="2.5"/><circle cx="16" cy="34" r="3" stroke="#f59e0b" stroke-width="2.5"/><circle cx="32" cy="34" r="3" stroke="#f59e0b" stroke-width="2.5"/></svg>
+        <h3>重機から手壊しまで対応</h3>
+        <p>現場の規模や周辺環境に合わせて、最適な工法をご提案します。</p>
+      </div>
+      <div class="s-card reveal">
+        <svg class="s-icon" viewBox="0 0 48 48" fill="none"><path d="M24 4 8 12v10c0 11 7 18 16 22 9-4 16-11 16-22V12L24 4Z" stroke="#f59e0b" stroke-width="2.5" stroke-linejoin="round"/><path d="M17 24l5 5 10-11" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>安全管理・近隣対応</h3>
+        <p>粉じん・騒音対策と事前のご挨拶まで、近隣に配慮した進行を徹底します。</p>
+      </div>
+      <div class="s-card reveal">
+        <svg class="s-icon" viewBox="0 0 48 48" fill="none"><path d="M24 44c9-6 16-13 16-23a16 16 0 1 0-32 0c0 10 7 17 16 23Z" stroke="#f59e0b" stroke-width="2.5"/><circle cx="24" cy="21" r="5" stroke="#f59e0b" stroke-width="2.5"/></svg>
+        <h3>地域密着・迅速対応</h3>
+        <p>対応エリア内なら現地調査から着工まで、スピーディーにご案内します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="works">
+  <div class="wrap">
+    <span class="eyebrow reveal">ご依頼の流れ</span>
+    <h2 class="reveal">お問い合わせから着工まで</h2>
+    <div class="flow">
+      <div class="f-step reveal">
+        <div class="f-num">1</div>
+        <div><h3>お問い合わせ・現地調査</h3><p>電話・メールで概要をお伺いし、現地を直接拝見してお見積もりします。</p></div>
+      </div>
+      <div class="f-step reveal">
+        <div class="f-num">2</div>
+        <div><h3>お見積もり・ご契約</h3><p>工法・工期・金額をご説明し、ご納得いただいてから契約に進みます。</p></div>
+      </div>
+      <div class="f-step reveal">
+        <div class="f-num">3</div>
+        <div><h3>近隣へのご挨拶</h3><p>着工前に近隣へご挨拶し、工事の内容と期間をお伝えします。</p></div>
+      </div>
+      <div class="f-step reveal">
+        <div class="f-num">4</div>
+        <div><h3>施工・廃材処理・完了報告</h3><p>安全管理のもと施工し、廃材処理まで含めて完了をご報告します。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow reveal">対応エリア</span>
+    <h2 class="reveal">このあたりで現場をお探しの方へ</h2>
+    <p class="lead reveal">下記エリアを中心に対応しています(表示は構成イメージです。実際の対応範囲はご相談ください)。</p>
+    <div class="areas reveal">
+      <span class="area-tag main">総社市</span>
+      <span class="area-tag main">岡山市</span>
+      <span class="area-tag">倉敷市</span>
+      <span class="area-tag">井原市</span>
+      <span class="area-tag">高梁市</span>
+      <span class="area-tag">近隣エリアも応相談</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow reveal">会社の想い</span>
+    <h2 class="reveal">解体は、次の一歩のための工事です</h2>
+    <div class="about reveal">
+      <div class="avatar">代表</div>
+      <div>
+        <blockquote>「壊すだけの仕事ではなく、安心して次の計画に進んでいただくための工事だと考えています。
+          近隣の方にも、ご依頼主様にも、気持ちよく工事を終えられるよう一件ずつ丁寧に対応します。」</blockquote>
+        <p class="role">代表者コメント(構成イメージ・サンプル用の文面です)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow reveal">料金の目安</span>
+    <h2 class="reveal">まずは概算からご相談ください</h2>
+    <p class="lead reveal">建物の構造・規模・立地によって変わるため、現地調査の上で正式にお見積りします。</p>
+    <div class="pricing">
+      <div class="p-card reveal">
+        <div class="ptitle">木造家屋の解体</div>
+        <div class="pval">◯◯万円〜(目安)</div>
+        <ul>
+          <li>延床面積・立地条件により変動します</li>
+          <li>廃材処分費を含めた概算です</li>
+        </ul>
+      </div>
+      <div class="p-card reveal">
+        <div class="ptitle">鉄骨・RC造の解体</div>
+        <div class="pval">◯◯万円〜(目安)</div>
+        <ul>
+          <li>構造・階数により現地調査が必須です</li>
+          <li>近隣養生費を含めた概算です</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <h2>まずは無料でご相談ください</h2>
+      <p>「見積もりだけ知りたい」「まだ検討中」という段階でも構いません。</p>
+      <a class="btn btn-primary" href="mailto:kkhoshioka@gmail.com?subject=%E8%A7%A3%E4%BD%93%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB%E3%81%AE%E4%BB%B6">
+        このサンプルについて相談する
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    &copy; 2026 柱石解体工業(架空・サンプル) — このページは制作サンプルです。実在の企業・工事とは関係ありません。
+  </div>
+</footer>
+
+<script>
+  var items = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  items.forEach(function(el){ io.observe(el); });
+</script>
+</body>
+</html>
