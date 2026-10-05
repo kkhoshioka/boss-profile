@@ -20,18 +20,19 @@
     font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;
     line-height:1.75; -webkit-font-smoothing:antialiased;
   }
-  img,svg{max-width:100%; display:block;}
+  img{max-width:100%; display:block;}
+  svg{display:block;}
   a{color:inherit;}
 
   /* ---------- 架空であることの明示 ---------- */
   .demo-flag{
     position:sticky; top:0; z-index:50; text-align:center;
     background:var(--accent); color:#1a1200; font-weight:700; font-size:12px;
-    padding:7px 10px; letter-spacing:0.03em;
+    padding:7px 10px; letter-spacing:0.02em;
   }
 
   /* ---------- 共通 ---------- */
-  .wrap{max-width:1040px; margin:0 auto; padding:0 20px;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 20px;}
   section{padding:76px 0;}
   .eyebrow{
     display:inline-block; font-size:12px; font-weight:700; letter-spacing:0.18em;
@@ -39,15 +40,19 @@
   }
   h2{font-size:clamp(22px,4vw,32px); font-weight:800; margin:0 0 16px; letter-spacing:0.01em;}
   .lead{color:var(--ink-faint); font-size:15px; max-width:52ch; margin:0 0 36px;}
-  .reveal{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal{opacity:0; transform:translateY(22px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);}
   .reveal.in{opacity:1; transform:translateY(0);}
+  .reveal.d1.in{transition-delay:.08s;} .reveal.d2.in{transition-delay:.16s;}
+  .reveal.d3.in{transition-delay:.24s;} .reveal.d4.in{transition-delay:.32s;}
 
   /* ---------- ヘッダー ---------- */
   header{
     position:sticky; top:29px; z-index:40;
-    background:rgba(17,20,24,0.78); backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
+    background:rgba(17,20,24,0.6); backdrop-filter:blur(10px);
+    border-bottom:1px solid transparent;
+    transition:background .3s ease, border-color .3s ease;
   }
+  header.scrolled{background:rgba(17,20,24,0.92); border-color:var(--line);}
   .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 20px;}
   .brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:15px;}
   .brand-mark{
@@ -60,20 +65,27 @@
     padding:9px 16px; border-radius:999px; text-decoration:none;
   }
 
-  /* ---------- ヒーロー ---------- */
+  /* ---------- ヒーロー(写真+動き) ---------- */
   .hero{
-    position:relative; overflow:hidden; padding:88px 0 96px;
-    background:
-      radial-gradient(900px 480px at 85% -10%, rgba(245,158,11,0.18), transparent 60%),
-      linear-gradient(180deg, var(--bg), var(--bg2));
+    position:relative; overflow:hidden; min-height:92vh;
+    display:flex; align-items:flex-end;
   }
-  .hero-grid{position:absolute; inset:0; opacity:0.35; pointer-events:none;}
+  .hero-bg{
+    position:absolute; inset:0; z-index:0;
+    background-image:
+      linear-gradient(180deg, rgba(10,12,14,0.35), rgba(10,12,14,0.55) 55%, var(--bg) 96%),
+      url('https://images.pexels.com/photos/15109996/pexels-photo-15109996.jpeg?auto=compress&cs=tinysrgb&w=1800');
+    background-size:cover; background-position:center;
+    animation:kenburns 22s ease-in-out infinite alternate;
+  }
+  @keyframes kenburns{ from{transform:scale(1.04);} to{transform:scale(1.16);} }
+  .hero-inner{position:relative; z-index:1; padding:120px 0 64px; width:100%;}
   .hero h1{
-    font-size:clamp(30px,5.4vw,50px); font-weight:900; line-height:1.3;
-    margin:0 0 18px; letter-spacing:0.01em;
+    font-size:clamp(32px,5.6vw,52px); font-weight:900; line-height:1.3;
+    margin:0 0 18px; letter-spacing:0.01em; text-shadow:0 4px 24px rgba(0,0,0,0.5);
   }
   .hero h1 .accent-text{color:var(--accent);}
-  .hero p.sub{color:var(--ink-faint); font-size:16px; max-width:46ch; margin:0 0 30px;}
+  .hero p.sub{color:#e9e9e7; font-size:16px; max-width:46ch; margin:0 0 30px; text-shadow:0 2px 12px rgba(0,0,0,0.5);}
   .hero-ctas{display:flex; flex-wrap:wrap; gap:12px;}
   .btn{
     display:inline-flex; align-items:center; gap:8px; padding:14px 24px;
@@ -81,14 +93,24 @@
     border:1px solid transparent;
   }
   .btn-primary{background:linear-gradient(90deg, var(--accent), var(--accent2)); color:#1a1200;}
-  .btn-ghost{border-color:var(--line); color:var(--ink);}
+  .btn-ghost{border-color:rgba(255,255,255,0.4); color:#fff; backdrop-filter:blur(4px);}
   .hero-stats{
     display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
-    margin-top:56px; border:1px solid var(--line); border-radius:16px; overflow:hidden;
+    margin-top:56px; border:1px solid rgba(255,255,255,0.15); border-radius:16px; overflow:hidden;
+    background:rgba(17,20,24,0.55); backdrop-filter:blur(6px);
   }
-  .hero-stats div{background:var(--panel); padding:18px 14px; text-align:center;}
-  .hero-stats .num{font-size:22px; font-weight:900; color:var(--accent);}
+  .hero-stats div{padding:18px 14px; text-align:center;}
+  .hero-stats .num{font-size:24px; font-weight:900; color:var(--accent);}
   .hero-stats .cap{font-size:11px; color:var(--ink-faint); margin-top:4px;}
+  .scroll-cue{
+    position:absolute; bottom:18px; left:50%; transform:translateX(-50%); z-index:1;
+    width:22px; height:34px; border:2px solid rgba(255,255,255,0.6); border-radius:20px;
+  }
+  .scroll-cue::before{
+    content:""; position:absolute; top:6px; left:50%; width:4px; height:8px; margin-left:-2px;
+    background:var(--accent); border-radius:2px; animation:cue 1.6s ease-in-out infinite;
+  }
+  @keyframes cue{ 0%{opacity:1; transform:translateY(0);} 70%{opacity:0; transform:translateY(10px);} 100%{opacity:0;} }
 
   /* ---------- 強み ---------- */
   .strengths{display:grid; gap:16px;}
@@ -97,10 +119,33 @@
     background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:24px;
     transition:transform .25s ease, border-color .25s ease;
   }
-  .s-card:hover{transform:translateY(-4px); border-color:rgba(245,158,11,0.5);}
+  .s-card:hover{transform:translateY(-6px); border-color:rgba(245,158,11,0.5);}
   .s-icon{width:44px; height:44px; margin-bottom:16px;}
   .s-card h3{font-size:16px; margin:0 0 8px; font-weight:800;}
   .s-card p{font-size:13px; color:var(--ink-faint); margin:0;}
+
+  /* ---------- 施工実績ギャラリー ---------- */
+  .gallery{display:grid; gap:14px; grid-template-columns:repeat(2,1fr);}
+  @media(min-width:720px){.gallery{grid-template-columns:repeat(3,1fr);}}
+  .g-item{
+    position:relative; border-radius:16px; overflow:hidden; aspect-ratio:4/5;
+    border:1px solid var(--line);
+  }
+  .g-item img{
+    width:100%; height:100%; object-fit:cover;
+    transition:transform .5s ease, filter .5s ease;
+    filter:saturate(0.92) contrast(1.05);
+  }
+  .g-item:hover img{transform:scale(1.08);}
+  .g-cap{
+    position:absolute; left:0; right:0; bottom:0; padding:14px;
+    background:linear-gradient(0deg, rgba(0,0,0,0.75), transparent);
+    font-size:12px; font-weight:700;
+  }
+  .g-tag{
+    position:absolute; top:10px; left:10px; background:rgba(0,0,0,0.55);
+    color:var(--ink-faint); font-size:10px; padding:4px 8px; border-radius:999px;
+  }
 
   /* ---------- 施工の流れ ---------- */
   .flow{display:grid; gap:0;}
@@ -128,14 +173,12 @@
   /* ---------- 会社の想い ---------- */
   .about{
     background:var(--panel); border:1px solid var(--line); border-radius:20px;
-    padding:32px; display:grid; gap:20px;
+    padding:0; display:grid; overflow:hidden;
   }
-  @media(min-width:720px){.about{grid-template-columns:120px 1fr; align-items:start;}}
-  .avatar{
-    width:96px; height:96px; border-radius:50%;
-    background:linear-gradient(135deg, var(--accent), var(--safe));
-    display:grid; place-items:center; font-weight:900; font-size:28px; color:#1a1200;
-  }
+  @media(min-width:720px){.about{grid-template-columns:260px 1fr;}}
+  .about-photo{min-height:220px; position:relative;}
+  .about-photo img{width:100%; height:100%; object-fit:cover; position:absolute; inset:0;}
+  .about-body{padding:28px;}
   .about blockquote{margin:0 0 10px; font-size:15px;}
   .about .role{font-size:12px; color:var(--ink-faint);}
 
@@ -152,10 +195,15 @@
 
   /* ---------- CTA ---------- */
   .cta-band{
-    background:linear-gradient(120deg, #1a1200, #2a1d05 60%, var(--bg));
-    border:1px solid rgba(245,158,11,0.35); border-radius:24px;
-    padding:40px 28px; text-align:center;
+    position:relative; border-radius:24px; overflow:hidden; padding:48px 28px; text-align:center;
   }
+  .cta-bg{
+    position:absolute; inset:0; z-index:0;
+    background-image:linear-gradient(120deg, rgba(10,8,2,0.88), rgba(26,18,5,0.82) 60%, rgba(17,20,24,0.92)),
+      url('https://images.pexels.com/photos/2327065/pexels-photo-2327065.jpeg?auto=compress&cs=tinysrgb&w=1600');
+    background-size:cover; background-position:center;
+  }
+  .cta-band > *{position:relative; z-index:1;}
   .cta-band h2{margin-bottom:10px;}
   .cta-band p{color:var(--ink-faint); margin-bottom:24px;}
 
@@ -164,9 +212,9 @@
 </head>
 <body>
 
-<div class="demo-flag">※これは実在しない会社「柱石解体工業」による、ホームページ制作サンプルです。実績・数値は構成イメージであり、実在の工事・顧客の声ではありません。</div>
+<div class="demo-flag">※これは実在しない会社「柱石解体工業」による、ホームページ制作サンプルです。実績・数値は構成イメージであり、実在の工事・顧客の声ではありません。写真はフリー素材(商用利用可)を使用しています。</div>
 
-<header>
+<header id="siteHeader">
   <div class="nav wrap">
     <div class="brand">
       <span class="brand-mark">柱</span>
@@ -177,21 +225,23 @@
 </header>
 
 <section class="hero">
-  <div class="wrap">
+  <div class="hero-bg"></div>
+  <div class="wrap hero-inner">
     <span class="eyebrow reveal">安全第一 / 地域密着</span>
-    <h1 class="reveal">解体の先にある、<br>次の景色まで<span class="accent-text">一緒に</span>考える。</h1>
-    <p class="sub reveal">木造・鉄骨・RC造まで対応。近隣への配慮と安全管理を徹底し、
+    <h1 class="reveal d1">解体の先にある、<br>次の景色まで<span class="accent-text">一緒に</span>考える。</h1>
+    <p class="sub reveal d2">木造・鉄骨・RC造まで対応。近隣への配慮と安全管理を徹底し、
       見積もりから廃材処理までワンストップでお任せいただけます。</p>
-    <div class="hero-ctas reveal">
+    <div class="hero-ctas reveal d3">
       <a class="btn btn-primary" href="#contact">無料で見積もり相談</a>
       <a class="btn btn-ghost" href="#works">施工の流れを見る</a>
     </div>
-    <div class="hero-stats reveal">
-      <div><div class="num">◯◯年</div><div class="cap">地域での施工実績</div></div>
-      <div><div class="num">◯◯件</div><div class="cap">年間対応件数(目安)</div></div>
-      <div><div class="num">◯分</div><div class="cap">見積もり相談の目安時間</div></div>
+    <div class="hero-stats reveal d4">
+      <div><div class="num" data-count="18">0</div><div class="cap">地域での施工実績(年)</div></div>
+      <div><div class="num" data-count="240">0</div><div class="cap">年間対応件数(目安・件)</div></div>
+      <div><div class="num" data-count="30">0</div><div class="cap">見積もり相談の目安(分)</div></div>
     </div>
   </div>
+  <div class="scroll-cue"></div>
 </section>
 
 <section>
@@ -200,17 +250,17 @@
     <h2 class="reveal">安心してお任せいただく、3つの理由</h2>
     <p class="lead reveal">価格だけでなく、近隣対応や安全管理まで含めてご相談いただけます。</p>
     <div class="strengths">
-      <div class="s-card reveal">
+      <div class="s-card reveal d1">
         <svg class="s-icon" viewBox="0 0 48 48" fill="none"><rect x="6" y="20" width="36" height="20" rx="3" stroke="#f59e0b" stroke-width="2.5"/><path d="M14 20V12a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v8" stroke="#f59e0b" stroke-width="2.5"/><circle cx="16" cy="34" r="3" stroke="#f59e0b" stroke-width="2.5"/><circle cx="32" cy="34" r="3" stroke="#f59e0b" stroke-width="2.5"/></svg>
         <h3>重機から手壊しまで対応</h3>
         <p>現場の規模や周辺環境に合わせて、最適な工法をご提案します。</p>
       </div>
-      <div class="s-card reveal">
+      <div class="s-card reveal d2">
         <svg class="s-icon" viewBox="0 0 48 48" fill="none"><path d="M24 4 8 12v10c0 11 7 18 16 22 9-4 16-11 16-22V12L24 4Z" stroke="#f59e0b" stroke-width="2.5" stroke-linejoin="round"/><path d="M17 24l5 5 10-11" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h3>安全管理・近隣対応</h3>
         <p>粉じん・騒音対策と事前のご挨拶まで、近隣に配慮した進行を徹底します。</p>
       </div>
-      <div class="s-card reveal">
+      <div class="s-card reveal d3">
         <svg class="s-icon" viewBox="0 0 48 48" fill="none"><path d="M24 44c9-6 16-13 16-23a16 16 0 1 0-32 0c0 10 7 17 16 23Z" stroke="#f59e0b" stroke-width="2.5"/><circle cx="24" cy="21" r="5" stroke="#f59e0b" stroke-width="2.5"/></svg>
         <h3>地域密着・迅速対応</h3>
         <p>対応エリア内なら現地調査から着工まで、スピーディーにご案内します。</p>
@@ -220,6 +270,31 @@
 </section>
 
 <section id="works">
+  <div class="wrap">
+    <span class="eyebrow reveal">施工実績(イメージ)</span>
+    <h2 class="reveal">こんな現場に対応します</h2>
+    <p class="lead reveal">掲載写真はフリー素材です。実際の施工実績ではなく、対応範囲のイメージとしてご覧ください。</p>
+    <div class="gallery">
+      <div class="g-item reveal d1">
+        <img loading="lazy" src="https://images.pexels.com/photos/11461002/pexels-photo-11461002.jpeg?auto=compress&cs=tinysrgb&w=800" alt="空き家・建物の解体イメージ">
+        <span class="g-tag">イメージ</span>
+        <span class="g-cap">木造家屋の解体</span>
+      </div>
+      <div class="g-item reveal d2">
+        <img loading="lazy" src="https://images.pexels.com/photos/159306/construction-site-build-construction-work-159306.jpeg?auto=compress&cs=tinysrgb&w=800" alt="解体現場での作業イメージ">
+        <span class="g-tag">イメージ</span>
+        <span class="g-cap">現場での安全確認</span>
+      </div>
+      <div class="g-item reveal d3">
+        <img loading="lazy" src="https://images.pexels.com/photos/2327065/pexels-photo-2327065.jpeg?auto=compress&cs=tinysrgb&w=800" alt="重機による解体作業イメージ">
+        <span class="g-tag">イメージ</span>
+        <span class="g-cap">重機による解体工事</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
   <div class="wrap">
     <span class="eyebrow reveal">ご依頼の流れ</span>
     <h2 class="reveal">お問い合わせから着工まで</h2>
@@ -265,11 +340,13 @@
     <span class="eyebrow reveal">会社の想い</span>
     <h2 class="reveal">解体は、次の一歩のための工事です</h2>
     <div class="about reveal">
-      <div class="avatar">代表</div>
-      <div>
+      <div class="about-photo">
+        <img loading="lazy" src="https://images.pexels.com/photos/28196526/pexels-photo-28196526.jpeg?auto=compress&cs=tinysrgb&w=600" alt="現場スタッフのイメージ写真">
+      </div>
+      <div class="about-body">
         <blockquote>「壊すだけの仕事ではなく、安心して次の計画に進んでいただくための工事だと考えています。
           近隣の方にも、ご依頼主様にも、気持ちよく工事を終えられるよう一件ずつ丁寧に対応します。」</blockquote>
-        <p class="role">代表者コメント(構成イメージ・サンプル用の文面です)</p>
+        <p class="role">代表者コメント(構成イメージ・サンプル用の文面です。写真もイメージ用のフリー素材です)</p>
       </div>
     </div>
   </div>
@@ -281,7 +358,7 @@
     <h2 class="reveal">まずは概算からご相談ください</h2>
     <p class="lead reveal">建物の構造・規模・立地によって変わるため、現地調査の上で正式にお見積りします。</p>
     <div class="pricing">
-      <div class="p-card reveal">
+      <div class="p-card reveal d1">
         <div class="ptitle">木造家屋の解体</div>
         <div class="pval">◯◯万円〜(目安)</div>
         <ul>
@@ -289,7 +366,7 @@
           <li>廃材処分費を含めた概算です</li>
         </ul>
       </div>
-      <div class="p-card reveal">
+      <div class="p-card reveal d2">
         <div class="ptitle">鉄骨・RC造の解体</div>
         <div class="pval">◯◯万円〜(目安)</div>
         <ul>
@@ -304,6 +381,7 @@
 <section id="contact">
   <div class="wrap">
     <div class="cta-band reveal">
+      <div class="cta-bg"></div>
       <h2>まずは無料でご相談ください</h2>
       <p>「見積もりだけ知りたい」「まだ検討中」という段階でも構いません。</p>
       <a class="btn btn-primary" href="mailto:kkhoshioka@gmail.com?subject=%E8%A7%A3%E4%BD%93%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB%E3%81%AE%E4%BB%B6">
@@ -315,11 +393,12 @@
 
 <footer>
   <div class="wrap">
-    &copy; 2026 柱石解体工業(架空・サンプル) — このページは制作サンプルです。実在の企業・工事とは関係ありません。
+    &copy; 2026 柱石解体工業(架空・サンプル) — このページは制作サンプルです。実在の企業・工事とは関係ありません。写真: Pexels(商用利用可フリー素材)
   </div>
 </footer>
 
 <script>
+  // スクロール演出
   var items = document.querySelectorAll('.reveal');
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
@@ -327,6 +406,33 @@
     });
   }, { threshold: 0.12 });
   items.forEach(function(el){ io.observe(el); });
+
+  // 数字のカウントアップ
+  var counters = document.querySelectorAll('[data-count]');
+  var cio = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      cio.unobserve(e.target);
+      var el = e.target;
+      var target = parseInt(el.getAttribute('data-count'), 10);
+      var start = performance.now();
+      var dur = 1200;
+      function step(now){
+        var p = Math.min(1, (now - start) / dur);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased);
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(function(el){ cio.observe(el); });
+
+  // ヘッダーの背景切り替え
+  var header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', function(){
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
 </script>
 </body>
 </html>
