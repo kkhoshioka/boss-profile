@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>柱石解体工業(サンプル) | 施工実績と対応エリア</title>
-<meta name="description" content="解体業者様向けホームページ制作のサンプルです。架空の会社「柱石解体工業」を題材にした、実際にお作りできる完成イメージです。">
+<title>○○解体工業株式会社(サンプル) | 施工実績と対応エリア</title>
+<meta name="description" content="解体業者様向けホームページ制作のサンプルです。架空の会社「○○解体工業株式会社」を題材にした、実際にお作りできる完成イメージです。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -69,12 +69,34 @@
   }
   header.scrolled{background:rgba(239,237,231,0.92); backdrop-filter:blur(10px); box-shadow:0 2px 16px rgba(20,24,30,0.06);}
   .nav{display:flex; align-items:center; justify-content:space-between; padding:18px 28px; max-width:none;}
-  .brand{display:flex; align-items:center; gap:12px; font-weight:900; font-size:16px; color:var(--navy); text-decoration:none;}
-  .brand-mark{
-    width:38px; height:38px; border-radius:10px; background:var(--accent);
-    display:grid; place-items:center; color:#fff; font-weight:900; font-size:16px;
+  /* ---------- 社名ロゴ ---------- */
+  .brand{display:flex; align-items:center; gap:14px; color:var(--navy); text-decoration:none;}
+  /* ヒーローと同じ「ブロック重ね」をモチーフにしたロゴマーク */
+  .brand-mark{position:relative; width:40px; height:40px; flex:none;}
+  .brand-mark i{position:absolute; border-radius:9px; transition:transform .5s var(--ease);}
+  .brand-mark i:nth-child(1){inset:0 10px 10px 0; background:var(--navy);}
+  .brand-mark i:nth-child(2){inset:10px 0 0 10px; background:var(--accent); box-shadow:-3px -3px 0 var(--bg);}
+  .brand-mark i:nth-child(3){inset:0; margin:auto; width:8px; height:8px; background:#fff; border-radius:2px;}
+  .brand:hover .brand-mark i:nth-child(1){transform:translate(3px,3px);}
+  .brand:hover .brand-mark i:nth-child(2){transform:translate(-3px,-3px);}
+  .brand-text{display:flex; flex-direction:column; line-height:1;}
+  .brand-en{
+    display:flex; align-items:center; gap:8px; font-family:var(--en); font-size:9px; font-weight:800;
+    letter-spacing:.28em; color:var(--accent); margin-bottom:6px;
   }
-  .brand small{display:block; font-family:var(--en); font-size:9px; letter-spacing:.24em; color:var(--accent); font-weight:800; line-height:1;}
+  .brand-en::after{content:""; width:22px; height:1px; background:currentColor; opacity:.6;}
+  .brand-name{display:flex; align-items:baseline; white-space:nowrap; font-weight:900; font-size:19px; letter-spacing:.08em;}
+  /* 「○○」= 御社名が入る場所。光が流れるグラデーションで目を引く */
+  .brand-slot{
+    background:linear-gradient(100deg, var(--accent) 0%, var(--accent) 35%, #ffd27a 50%, var(--accent) 65%, var(--accent) 100%);
+    background-size:250% 100%; -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation:shine 3.6s ease-in-out infinite; margin-right:.06em;
+  }
+  @keyframes shine{0%{background-position:100% 0;} 60%,100%{background-position:0 0;}}
+  .brand-kk{
+    font-size:11px; font-weight:700; letter-spacing:.18em; color:var(--ink-faint);
+    margin-left:10px; padding-left:10px; border-left:1px solid var(--line); align-self:center;
+  }
   .nav-links{display:none; gap:34px; font-size:14px; font-weight:700; color:var(--navy);}
   .nav-links a{text-decoration:none; position:relative;}
   .nav-links a::after{content:""; position:absolute; left:0; bottom:-4px; width:100%; height:2px; background:var(--accent); transform:scaleX(0); transform-origin:right; transition:transform .4s var(--ease);}
@@ -86,8 +108,12 @@
   .cta-mini{white-space:nowrap;}
   @media(max-width:599px){
     .nav{padding:14px 16px;}
-    .brand{font-size:13px; gap:10px; white-space:nowrap;}
-    .brand-mark{width:32px; height:32px; font-size:14px;}
+    .brand{gap:10px;}
+    .brand-mark{width:32px; height:32px;}
+    .brand-mark i:nth-child(1){inset:0 8px 8px 0;} .brand-mark i:nth-child(2){inset:8px 0 0 8px;}
+    .brand-name{font-size:15px; letter-spacing:.04em;}
+    .brand-kk{font-size:10px; margin-left:6px; padding-left:6px; letter-spacing:.08em;}
+    .brand-en{font-size:8px; margin-bottom:5px;}
     .cta-mini{padding:9px 16px; font-size:12px;}
   }
   @media(min-width:960px){.nav-links{display:flex;}}
@@ -285,7 +311,9 @@
     line-height:1; color:rgba(255,255,255,.05); white-space:nowrap; pointer-events:none;
   }
 
-  footer{padding:34px 0; text-align:center; color:var(--ink-faint); font-size:11px;}
+  footer{padding:20px 0 34px; text-align:center; color:var(--ink-faint); font-size:11px;}
+  .foot-brand{display:inline-flex; margin-bottom:26px; transform:scale(1.5); transform-origin:center; padding:20px 0;}
+  @media(max-width:599px){.foot-brand{transform:scale(1.2);}}
 
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{animation:none !important; transition:none !important;}
@@ -297,13 +325,16 @@
 <body>
 
 <div id="progressBar"></div>
-<div class="demo-flag">※これは実在しない会社「柱石解体工業」による、ホームページ制作サンプルです。実績・数値は構成イメージであり、実在の工事・顧客の声ではありません。写真はフリー素材(商用利用可)を使用しています。</div>
+<div class="demo-flag">※これは実在しない会社「○○解体工業株式会社」による、ホームページ制作サンプルです。実績・数値は構成イメージであり、実在の工事・顧客の声ではありません。写真はフリー素材(商用利用可)を使用しています。</div>
 
 <header id="siteHeader">
   <div class="nav">
     <a class="brand" href="#">
-      <span class="brand-mark">柱</span>
-      <span><small>CHUSEKI DEMOLITION</small>柱石解体工業(サンプル)</span>
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-text">
+        <span class="brand-en">DEMOLITION CO., LTD.</span>
+        <span class="brand-name"><span class="brand-slot">○○</span>解体工業<span class="brand-kk">株式会社</span></span>
+      </span>
     </a>
     <nav class="nav-links">
       <a href="#reason">選ばれる理由</a>
@@ -514,7 +545,14 @@
 
 <footer>
   <div class="wrap">
-    &copy; 2026 柱石解体工業(架空・サンプル) — このページは制作サンプルです。実在の企業・工事とは関係ありません。写真: Pexels(商用利用可フリー素材)
+    <a class="brand foot-brand" href="#">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-text">
+        <span class="brand-en">DEMOLITION CO., LTD.</span>
+        <span class="brand-name"><span class="brand-slot">○○</span>解体工業<span class="brand-kk">株式会社</span></span>
+      </span>
+    </a><br>
+    &copy; 2026 ○○解体工業株式会社(架空・サンプル) — このページは制作サンプルです。実在の企業・工事とは関係ありません。写真: Pexels(商用利用可フリー素材)
   </div>
 </footer>
 
