@@ -315,6 +315,68 @@
   .foot-brand{display:inline-flex; margin-bottom:26px; transform:scale(1.5); transform-origin:center; padding:20px 0;}
   @media(max-width:599px){.foot-brand{transform:scale(1.2);}}
 
+  /* ---------- ヒーローカード内の社名 ---------- */
+  .h-company{display:flex; align-items:center; gap:12px; margin:0 0 22px;}
+  .h-company .brand-mark{width:30px; height:30px;}
+  .h-company .brand-mark i:nth-child(1){inset:0 8px 8px 0;} .h-company .brand-mark i:nth-child(2){inset:8px 0 0 8px;}
+  .h-company .brand-name{font-size:17px; color:var(--navy);}
+  @media(min-width:900px){ .h-company .brand-name{font-size:20px;} }
+
+  /* ---------- オープニング:社名が「ドンッ!」と落ちてくる ---------- */
+  #intro, #introWipe{position:fixed; inset:0; z-index:100; transition:clip-path .9s var(--ease);}
+  #introWipe{z-index:99; background:var(--accent); transition-delay:.12s;}
+  #intro{background:var(--navy); display:grid; place-items:center; overflow:hidden; cursor:pointer;}
+  #intro.out, #introWipe.out{clip-path:inset(0 0 100% 0);}
+  .intro-stage{position:relative; text-align:center; padding:0 16px; transition:opacity .4s ease, transform .9s var(--ease);}
+  #intro.out .intro-stage{opacity:0; transform:translateY(-60px);}
+  .intro-en{
+    font-family:var(--en); font-weight:800; font-size:clamp(10px,1.4vw,14px); letter-spacing:.5em; color:var(--accent);
+    opacity:0; animation:fadeUp .6s ease .15s forwards;
+  }
+  .intro-name{
+    display:flex; justify-content:center; white-space:nowrap; margin:18px 0 0;
+    font-weight:900; font-size:clamp(48px,12vw,170px); line-height:1.1; letter-spacing:.04em; color:#fff;
+  }
+  .intro-name .ic{display:inline-block; opacity:0; animation:slam .55s cubic-bezier(.2,.9,.3,1.25) forwards;}
+  .intro-name .ic.slot{color:var(--accent);}
+  @keyframes slam{
+    0%{opacity:0; transform:translateY(-120%) scale(1.8); filter:blur(10px);}
+    55%{opacity:1; transform:translateY(4%) scale(.92, 1.08); filter:blur(0);}
+    75%{transform:translateY(0) scale(1.06,.94);}
+    100%{opacity:1; transform:none;}
+  }
+  /* 着地の瞬間、画面ごと揺れる */
+  .intro-stage.hit{animation:shake .45s cubic-bezier(.36,.07,.19,.97);}
+  @keyframes shake{
+    10%,90%{transform:translate(-2px,1px);} 20%,80%{transform:translate(5px,-3px);}
+    30%,50%,70%{transform:translate(-8px,4px);} 40%,60%{transform:translate(8px,-4px);}
+  }
+  .intro-ring{
+    position:absolute; left:50%; top:58%; width:200px; height:200px; margin:-100px 0 0 -100px; border-radius:50%;
+    border:3px solid rgba(255,255,255,.7); opacity:0; pointer-events:none;
+  }
+  .intro-stage.hit .intro-ring{animation:ring .8s ease-out forwards;}
+  @keyframes ring{0%{opacity:.9; transform:scale(.3);} 100%{opacity:0; transform:scale(4.5);}}
+  /* ガレキ(小さな四角)が飛び散る */
+  .debris{position:absolute; left:50%; top:62%; width:var(--s); height:var(--s); background:var(--c); border-radius:2px; opacity:0; pointer-events:none;}
+  .intro-stage.hit .debris{animation:debris 1s cubic-bezier(.15,.7,.3,1) forwards;}
+  @keyframes debris{
+    0%{opacity:1; transform:translate(0,0) rotate(0);}
+    100%{opacity:0; transform:translate(var(--x), var(--y)) rotate(var(--r));}
+  }
+  .intro-line{width:0; height:3px; background:var(--accent); margin:22px auto 0; transition:width .7s var(--ease);}
+  .intro-stage.hit .intro-line{width:min(420px,60vw);}
+  .intro-kk{
+    margin-top:16px; color:rgba(255,255,255,.85); font-weight:700; letter-spacing:.8em; padding-left:.8em;
+    font-size:clamp(13px,1.6vw,18px); opacity:0; transform:translateY(10px); transition:all .6s ease .25s;
+  }
+  .intro-stage.hit .intro-kk{opacity:1; transform:none;}
+  .intro-skip{
+    position:absolute; right:20px; bottom:20px; font-family:var(--en); font-size:11px; font-weight:800; letter-spacing:.2em;
+    color:rgba(255,255,255,.5); background:none; border:1px solid rgba(255,255,255,.25); border-radius:999px; padding:8px 16px; cursor:pointer;
+  }
+  @keyframes fadeUp{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;}}
+
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{animation:none !important; transition:none !important;}
     .wipe-r,.wipe-l{clip-path:none;} .rise{opacity:1; transform:none;} .split .ch{transform:none;}
@@ -323,6 +385,45 @@
 </style>
 </head>
 <body>
+<script>
+  // オープニング演出(ページ本体が見える前に被せたいので body の先頭で組み立てる)
+  (function(){
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var chars = ['○','○','解','体','工','業'];
+    var html = '<div class="intro-stage"><div class="intro-en">DEMOLITION CO., LTD.</div><div class="intro-name">';
+    chars.forEach(function(c, i){
+      html += '<span class="ic' + (i < 2 ? ' slot' : '') + '" style="animation-delay:' + (0.35 + i * 0.09) + 's">' + c + '</span>';
+    });
+    html += '</div><div class="intro-line"></div><div class="intro-kk">株式会社</div><span class="intro-ring"></span>';
+    var colors = ['#e8710a', '#f6c343', '#ffffff', '#9aa3b2'];
+    for (var i = 0; i < 16; i++) {
+      var ang = Math.random() * Math.PI * 2, dist = 160 + Math.random() * 300;
+      html += '<span class="debris" style="--x:' + Math.round(Math.cos(ang) * dist) + 'px;--y:' + Math.round(Math.sin(ang) * dist * 0.7) +
+        'px;--r:' + Math.round(Math.random() * 720 - 360) + 'deg;--s:' + Math.round(5 + Math.random() * 11) + 'px;--c:' + colors[i % 4] + '"></span>';
+    }
+    html += '</div><button class="intro-skip" type="button">SKIP</button>';
+
+    var wipe = document.createElement('div'); wipe.id = 'introWipe';
+    var intro = document.createElement('div'); intro.id = 'intro'; intro.setAttribute('aria-hidden', 'true'); intro.innerHTML = html;
+    document.body.appendChild(wipe); document.body.appendChild(intro);
+    document.documentElement.style.overflow = 'hidden';
+
+    var stage = intro.querySelector('.intro-stage'), done = false;
+    var hitAt = 1100;  // 最後の文字が着地するタイミング
+    var t1 = setTimeout(function(){ stage.classList.add('hit'); }, hitAt);
+    var t2 = setTimeout(finish, hitAt + 1400);
+    function finish(){
+      if (done) return;
+      done = true; clearTimeout(t1); clearTimeout(t2);
+      intro.classList.add('out'); wipe.classList.add('out');
+      document.documentElement.style.overflow = '';
+      window.dispatchEvent(new Event('introdone'));
+      setTimeout(function(){ intro.remove(); wipe.remove(); }, 1400);
+    }
+    intro.addEventListener('click', finish);
+    window.__introActive = true;
+  })();
+</script>
 
 <div id="progressBar"></div>
 <div class="demo-flag">※これは実在しない会社「○○解体工業株式会社」による、ホームページ制作サンプルです。実績・数値は構成イメージであり、実在の工事・顧客の声ではありません。写真はフリー素材(商用利用可)を使用しています。</div>
@@ -361,7 +462,13 @@
     </div>
 
     <div class="h-card rise dl3">
-      <p class="h-label">SAFETY FIRST &amp; LOCAL</p>
+      <div class="h-company">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="brand-text">
+          <span class="brand-en">DEMOLITION CO., LTD.</span>
+          <span class="brand-name"><span class="brand-slot">○○</span>解体工業<span class="brand-kk">株式会社</span></span>
+        </span>
+      </div>
       <h1>解体の先にある、<br>次の景色まで<br><span class="accent">一緒に</span>考える。</h1>
       <span class="bar"></span>
       <p>木造・鉄骨・RC造まで対応。近隣への配慮と安全管理を徹底し、見積もりから廃材処理までワンストップでお任せいただけます。</p>
@@ -578,9 +685,11 @@
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
 
-  // ヒーローはページを開いた瞬間に演出スタート
+  // ヒーローはオープニングが明けた直後(オープニングが無ければ即)に演出スタート
   var hero = document.getElementById('hero');
-  setTimeout(function(){ hero.classList.add('in'); }, 100);
+  function startHero(){ hero.classList.add('in'); }
+  if (window.__introActive) window.addEventListener('introdone', function(){ setTimeout(startHero, 300); }, { once: true });
+  else setTimeout(startHero, 100);
 
   // 数字のカウントアップ
   var cio = new IntersectionObserver(function(entries){
@@ -594,7 +703,11 @@
         el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
         if (p < 1) requestAnimationFrame(step);
       }
-      setTimeout(function(){ requestAnimationFrame(step); }, 900);
+      // オープニング中に数え終わらないよう、ヒーロー演出が始まってから数える
+      (function go(){
+        if (!hero.classList.contains('in')) return setTimeout(go, 200);
+        setTimeout(function(){ requestAnimationFrame(step); }, 900);
+      })();
     });
   }, { threshold: 0.5 });
   document.querySelectorAll('[data-count]').forEach(function(el){ cio.observe(el); });
